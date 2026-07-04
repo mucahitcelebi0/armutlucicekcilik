@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="robots" content="noindex"/>
+  <title>Yönetim Paneli | Armutlu Çiçekçilik</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="admin.css"/>
+</head>
+<body>
+
+  <!-- ============ GİRİŞ ============ -->
+  <div class="login-wrap" id="loginWrap">
+    <form class="login-card" id="loginForm">
+      <div class="login-logo">B</div>
+      <h1>Yönetim Paneli</h1>
+      <p class="sub">Armutlu Çiçekçilik</p>
+      <div id="configWarn"></div>
+      <div class="field">
+        <label>E-posta</label>
+        <input type="email" id="email" placeholder="ornek@mail.com" required/>
+      </div>
+      <div class="field">
+        <label>Şifre</label>
+        <input type="password" id="password" placeholder="••••••••" required/>
+      </div>
+      <button type="submit" class="btn btn-dark" style="width:100%" id="loginBtn">Giriş Yap</button>
+      <p class="hint" id="loginError" style="color:var(--danger);margin-top:12px;font-size:.82rem;min-height:18px"></p>
+    </form>
+  </div>
+
+  <!-- ============ UYGULAMA ============ -->
+  <div class="app" id="app">
+    <div class="topbar">
+      <div class="brand"><span class="mark">A</span> Armutlu Çiçekçilik</div>
+      <div class="right">
+        <span class="who" id="whoami"></span>
+        <a href="index.html" target="_blank" class="btn btn-light btn-sm">Siteyi Gör ↗</a>
+        <button class="btn btn-light btn-sm" id="logoutBtn">Çıkış</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="seedBanner"></div>
+
+      <div class="tabs">
+        <button data-tab="products" class="active">🌸 Ürünler</button>
+        <button data-tab="categories">🏷️ Kategoriler</button>
+        <button data-tab="settings">⚙️ Ayarlar</button>
+      </div>
+
+      <!-- ÜRÜNLER -->
+      <section class="panel active" id="panel-products">
+        <div class="panel-head">
+          <div>
+            <h2>Ürünler</h2>
+            <p>Çiçek/ürün ekle, düzenle veya sil. Eklediklerin sitede anında görünür.</p>
+          </div>
+          <button class="btn btn-gold" id="addProductBtn">+ Yeni Ürün</button>
+        </div>
+        <div class="grid" id="productGrid"></div>
+      </section>
+
+      <!-- KATEGORİLER -->
+      <section class="panel" id="panel-categories">
+        <div class="panel-head">
+          <div>
+            <h2>Kategoriler</h2>
+            <p>Ürün filtreleri burada belirlenir (Buketler, Aranjmanlar, Çelenk...).</p>
+          </div>
+          <button class="btn btn-gold" id="addCategoryBtn">+ Yeni Kategori</button>
+        </div>
+        <div class="list" id="categoryList"></div>
+      </section>
+
+      <!-- AYARLAR -->
+      <section class="panel" id="panel-settings">
+        <div class="panel-head">
+          <div>
+            <h2>Genel Ayarlar</h2>
+            <p>İletişim bilgileri, çalışma saatleri ve site metinleri.</p>
+          </div>
+          <button class="btn btn-gold" id="saveSettingsBtn">Kaydet</button>
+        </div>
+        <div class="list" style="padding:24px">
+          <form id="settingsForm" class="form-grid">
+            <div class="field"><label>İşletme Adı</label><input id="s-shopName" type="text"/></div>
+            <div class="field"><label>WhatsApp No (başında 90)</label><input id="s-whatsapp" type="text" placeholder="905514223218"/><div class="hint">Sadece rakam. Örn: 905514223218</div></div>
+            <div class="field"><label>Telefon (görünen)</label><input id="s-phone" type="text" placeholder="0551 422 32 18"/></div>
+            <div class="field"><label>Çalışma Saatleri</label><input id="s-hours" type="text" placeholder="7/24 Açık"/></div>
+            <div class="field full"><label>Adres</label><input id="s-address" type="text" placeholder="Bayır Mah. Atatürk Cd. No:25, 77500 Armutlu / Yalova"/></div>
+            <div class="field"><label>Google Puanı</label><input id="s-rating" type="text" placeholder="5.0"/></div>
+            <div class="field"><label>Yorum Sayısı</label><input id="s-reviewCount" type="text" placeholder="127"/></div>
+            <div class="field full"><label>Hero Alt Yazı (ana sayfa)</label><textarea id="s-heroSubtitle" placeholder="Armutlu'nun en seçkin çiçekçisi..."></textarea></div>
+            <div class="field full"><label>Google Harita Linki (yerleştirme/embed)</label><input id="s-mapUrl" type="text" placeholder="https://maps.google.com/maps?q=...&output=embed"/><div class="hint">Boş bırakırsan mevcut harita kalır.</div></div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ============ ÜRÜN MODAL ============ -->
+  <div class="modal" id="productModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="productModalTitle">Yeni Ürün</h3>
+        <button class="x" data-close>×</button>
+      </div>
+      <div class="modal-body">
+        <form id="productForm">
+          <input type="hidden" id="p-id"/>
+          <div class="field">
+            <label>Ürün Fotoğrafı</label>
+            <div class="uploader">
+              <div class="preview" id="p-preview">Önizleme</div>
+              <div class="up-actions">
+                <input type="file" id="p-file" accept="image/*" style="display:none"/>
+                <button type="button" class="btn btn-light btn-sm" id="p-uploadBtn">📷 Fotoğraf Seç & Yükle</button>
+                <div class="hint" id="p-uploadHint">JPG/PNG. Yüklenince otomatik kaydedilir.</div>
+                <input type="hidden" id="p-image"/>
+              </div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="field full"><label>Ürün Adı</label><input id="p-name" type="text" required placeholder="Kırmızı Gül Vazo Aranjmanı"/></div>
+            <div class="field"><label>Kategori</label><select id="p-category"></select></div>
+            <div class="field"><label>Fiyat</label><input id="p-price" type="text" inputmode="numeric" placeholder="650"/><div class="hint">Sadece rakam yaz, ₺ simgesi otomatik eklenir.</div></div>
+            <div class="field"><label>Rozet (opsiyonel)</label><input id="p-badge" type="text" placeholder="Çok Satan / Yeni / Popüler"/></div>
+            <div class="field"><label>Sıra</label><input id="p-order" type="number" value="0"/><div class="hint">Küçük sayı önce gösterilir.</div></div>
+            <div class="field full"><label>Açıklama</label><textarea id="p-desc" placeholder="Taze kırmızı güller ve cipso ile şık cam vazo aranjmanı."></textarea></div>
+            <div class="field full">
+              <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0">
+                <input type="checkbox" id="p-active" checked style="width:auto"/> Sitede göster (aktif)
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-light" data-close>İptal</button>
+        <button class="btn btn-gold" id="saveProductBtn">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ KATEGORİ MODAL ============ -->
+  <div class="modal" id="categoryModal">
+    <div class="modal-card" style="max-width:420px">
+      <div class="modal-head">
+        <h3 id="categoryModalTitle">Yeni Kategori</h3>
+        <button class="x" data-close>×</button>
+      </div>
+      <div class="modal-body">
+        <form id="categoryForm">
+          <input type="hidden" id="c-id"/>
+          <div class="field"><label>Kategori Adı</label><input id="c-name" type="text" required placeholder="Buketler"/></div>
+          <div class="field"><label>Sıra</label><input id="c-order" type="number" value="0"/></div>
+        </form>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-light" data-close>İptal</button>
+        <button class="btn btn-gold" id="saveCategoryBtn">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Node (varsa)
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Build çıktısı
+dist/
+build/
+
+# Local ortam
+.env
+.env.local
+.env.*.local
+
+# Claude / araç ayarları
+.claude/
